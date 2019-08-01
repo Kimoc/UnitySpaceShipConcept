@@ -26,17 +26,25 @@ public class PlayerControls : IInputActionCollection
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Yaw"",
+                    ""name"": ""RotateShip"",
                     ""type"": ""Button"",
-                    ""id"": ""25e2ce6f-d952-4c9f-81f8-ab78ffb8fbe3"",
+                    ""id"": ""8647dcc3-69b5-4d0d-87f8-d1e36ebb2730"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Pitch"",
+                    ""name"": ""RotateLeft"",
                     ""type"": ""Button"",
-                    ""id"": ""a39eea4c-de99-46f2-a50f-204446ebee1f"",
+                    ""id"": ""4075bdcd-04ca-41c0-b18a-3bf7198b92b5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""RotateRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""723ad0ef-4400-4463-8cde-64339b9bc044"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
@@ -56,23 +64,34 @@ public class PlayerControls : IInputActionCollection
                 },
                 {
                     ""name"": """",
-                    ""id"": ""869fc9d2-44c2-41f6-8721-1c420ebb6c8d"",
-                    ""path"": ""<Gamepad>/leftStick/x"",
+                    ""id"": ""5d65d5a7-78bd-4d79-8e99-459d0fb66d93"",
+                    ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Yaw"",
+                    ""action"": ""RotateShip"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6811de8d-581a-425b-9700-463f64b2c2b4"",
-                    ""path"": ""<Gamepad>/leftStick/y"",
+                    ""id"": ""85ad95d2-6e85-4707-b153-2498391cfb3a"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pitch"",
+                    ""action"": ""RotateLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""80e8073d-ed17-4e67-b2f4-75c257187912"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -84,8 +103,9 @@ public class PlayerControls : IInputActionCollection
         // GamePlay
         m_GamePlay = asset.GetActionMap("GamePlay");
         m_GamePlay_Accelerate = m_GamePlay.GetAction("Accelerate");
-        m_GamePlay_Yaw = m_GamePlay.GetAction("Yaw");
-        m_GamePlay_Pitch = m_GamePlay.GetAction("Pitch");
+        m_GamePlay_RotateShip = m_GamePlay.GetAction("RotateShip");
+        m_GamePlay_RotateLeft = m_GamePlay.GetAction("RotateLeft");
+        m_GamePlay_RotateRight = m_GamePlay.GetAction("RotateRight");
     }
 
     ~PlayerControls()
@@ -136,15 +156,17 @@ public class PlayerControls : IInputActionCollection
     private readonly InputActionMap m_GamePlay;
     private IGamePlayActions m_GamePlayActionsCallbackInterface;
     private readonly InputAction m_GamePlay_Accelerate;
-    private readonly InputAction m_GamePlay_Yaw;
-    private readonly InputAction m_GamePlay_Pitch;
+    private readonly InputAction m_GamePlay_RotateShip;
+    private readonly InputAction m_GamePlay_RotateLeft;
+    private readonly InputAction m_GamePlay_RotateRight;
     public struct GamePlayActions
     {
         private PlayerControls m_Wrapper;
         public GamePlayActions(PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Accelerate => m_Wrapper.m_GamePlay_Accelerate;
-        public InputAction @Yaw => m_Wrapper.m_GamePlay_Yaw;
-        public InputAction @Pitch => m_Wrapper.m_GamePlay_Pitch;
+        public InputAction @RotateShip => m_Wrapper.m_GamePlay_RotateShip;
+        public InputAction @RotateLeft => m_Wrapper.m_GamePlay_RotateLeft;
+        public InputAction @RotateRight => m_Wrapper.m_GamePlay_RotateRight;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -157,12 +179,15 @@ public class PlayerControls : IInputActionCollection
                 Accelerate.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAccelerate;
                 Accelerate.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAccelerate;
                 Accelerate.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAccelerate;
-                Yaw.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnYaw;
-                Yaw.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnYaw;
-                Yaw.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnYaw;
-                Pitch.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnPitch;
-                Pitch.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnPitch;
-                Pitch.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnPitch;
+                RotateShip.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateShip;
+                RotateShip.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateShip;
+                RotateShip.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateShip;
+                RotateLeft.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateLeft;
+                RotateLeft.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateLeft;
+                RotateLeft.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateLeft;
+                RotateRight.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateRight;
+                RotateRight.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateRight;
+                RotateRight.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateRight;
             }
             m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
             if (instance != null)
@@ -170,12 +195,15 @@ public class PlayerControls : IInputActionCollection
                 Accelerate.started += instance.OnAccelerate;
                 Accelerate.performed += instance.OnAccelerate;
                 Accelerate.canceled += instance.OnAccelerate;
-                Yaw.started += instance.OnYaw;
-                Yaw.performed += instance.OnYaw;
-                Yaw.canceled += instance.OnYaw;
-                Pitch.started += instance.OnPitch;
-                Pitch.performed += instance.OnPitch;
-                Pitch.canceled += instance.OnPitch;
+                RotateShip.started += instance.OnRotateShip;
+                RotateShip.performed += instance.OnRotateShip;
+                RotateShip.canceled += instance.OnRotateShip;
+                RotateLeft.started += instance.OnRotateLeft;
+                RotateLeft.performed += instance.OnRotateLeft;
+                RotateLeft.canceled += instance.OnRotateLeft;
+                RotateRight.started += instance.OnRotateRight;
+                RotateRight.performed += instance.OnRotateRight;
+                RotateRight.canceled += instance.OnRotateRight;
             }
         }
     }
@@ -183,7 +211,8 @@ public class PlayerControls : IInputActionCollection
     public interface IGamePlayActions
     {
         void OnAccelerate(InputAction.CallbackContext context);
-        void OnYaw(InputAction.CallbackContext context);
-        void OnPitch(InputAction.CallbackContext context);
+        void OnRotateShip(InputAction.CallbackContext context);
+        void OnRotateLeft(InputAction.CallbackContext context);
+        void OnRotateRight(InputAction.CallbackContext context);
     }
 }

@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/PlayerControls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/PlayerControls.inputactions'
 
 using System.Collections;
 using System.Collections.Generic;
@@ -24,6 +24,22 @@ public class PlayerControls : IInputActionCollection
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Yaw"",
+                    ""type"": ""Button"",
+                    ""id"": ""25e2ce6f-d952-4c9f-81f8-ab78ffb8fbe3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""a39eea4c-de99-46f2-a50f-204446ebee1f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -37,6 +53,28 @@ public class PlayerControls : IInputActionCollection
                     ""action"": ""Accelerate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""869fc9d2-44c2-41f6-8721-1c420ebb6c8d"",
+                    ""path"": ""<Gamepad>/leftStick/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6811de8d-581a-425b-9700-463f64b2c2b4"",
+                    ""path"": ""<Gamepad>/leftStick/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -46,6 +84,8 @@ public class PlayerControls : IInputActionCollection
         // GamePlay
         m_GamePlay = asset.GetActionMap("GamePlay");
         m_GamePlay_Accelerate = m_GamePlay.GetAction("Accelerate");
+        m_GamePlay_Yaw = m_GamePlay.GetAction("Yaw");
+        m_GamePlay_Pitch = m_GamePlay.GetAction("Pitch");
     }
 
     ~PlayerControls()
@@ -96,11 +136,15 @@ public class PlayerControls : IInputActionCollection
     private readonly InputActionMap m_GamePlay;
     private IGamePlayActions m_GamePlayActionsCallbackInterface;
     private readonly InputAction m_GamePlay_Accelerate;
+    private readonly InputAction m_GamePlay_Yaw;
+    private readonly InputAction m_GamePlay_Pitch;
     public struct GamePlayActions
     {
         private PlayerControls m_Wrapper;
         public GamePlayActions(PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Accelerate => m_Wrapper.m_GamePlay_Accelerate;
+        public InputAction @Yaw => m_Wrapper.m_GamePlay_Yaw;
+        public InputAction @Pitch => m_Wrapper.m_GamePlay_Pitch;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -113,6 +157,12 @@ public class PlayerControls : IInputActionCollection
                 Accelerate.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAccelerate;
                 Accelerate.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAccelerate;
                 Accelerate.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnAccelerate;
+                Yaw.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnYaw;
+                Yaw.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnYaw;
+                Yaw.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnYaw;
+                Pitch.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnPitch;
+                Pitch.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnPitch;
+                Pitch.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnPitch;
             }
             m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
             if (instance != null)
@@ -120,6 +170,12 @@ public class PlayerControls : IInputActionCollection
                 Accelerate.started += instance.OnAccelerate;
                 Accelerate.performed += instance.OnAccelerate;
                 Accelerate.canceled += instance.OnAccelerate;
+                Yaw.started += instance.OnYaw;
+                Yaw.performed += instance.OnYaw;
+                Yaw.canceled += instance.OnYaw;
+                Pitch.started += instance.OnPitch;
+                Pitch.performed += instance.OnPitch;
+                Pitch.canceled += instance.OnPitch;
             }
         }
     }
@@ -127,5 +183,7 @@ public class PlayerControls : IInputActionCollection
     public interface IGamePlayActions
     {
         void OnAccelerate(InputAction.CallbackContext context);
+        void OnYaw(InputAction.CallbackContext context);
+        void OnPitch(InputAction.CallbackContext context);
     }
 }

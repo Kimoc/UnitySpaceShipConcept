@@ -48,6 +48,14 @@ public class PlayerControls : IInputActionCollection
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Decelerate"",
+                    ""type"": ""Button"",
+                    ""id"": ""bfc6a2f8-8e6d-4e36-9b32-9709727cbc5e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -94,6 +102,17 @@ public class PlayerControls : IInputActionCollection
                     ""action"": ""RotateRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""918c5c03-28c8-412d-8cb0-6fcd936507d4"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Decelerate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -106,6 +125,7 @@ public class PlayerControls : IInputActionCollection
         m_GamePlay_RotateShip = m_GamePlay.GetAction("RotateShip");
         m_GamePlay_RotateLeft = m_GamePlay.GetAction("RotateLeft");
         m_GamePlay_RotateRight = m_GamePlay.GetAction("RotateRight");
+        m_GamePlay_Decelerate = m_GamePlay.GetAction("Decelerate");
     }
 
     ~PlayerControls()
@@ -159,6 +179,7 @@ public class PlayerControls : IInputActionCollection
     private readonly InputAction m_GamePlay_RotateShip;
     private readonly InputAction m_GamePlay_RotateLeft;
     private readonly InputAction m_GamePlay_RotateRight;
+    private readonly InputAction m_GamePlay_Decelerate;
     public struct GamePlayActions
     {
         private PlayerControls m_Wrapper;
@@ -167,6 +188,7 @@ public class PlayerControls : IInputActionCollection
         public InputAction @RotateShip => m_Wrapper.m_GamePlay_RotateShip;
         public InputAction @RotateLeft => m_Wrapper.m_GamePlay_RotateLeft;
         public InputAction @RotateRight => m_Wrapper.m_GamePlay_RotateRight;
+        public InputAction @Decelerate => m_Wrapper.m_GamePlay_Decelerate;
         public InputActionMap Get() { return m_Wrapper.m_GamePlay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -188,6 +210,9 @@ public class PlayerControls : IInputActionCollection
                 RotateRight.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateRight;
                 RotateRight.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateRight;
                 RotateRight.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnRotateRight;
+                Decelerate.started -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnDecelerate;
+                Decelerate.performed -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnDecelerate;
+                Decelerate.canceled -= m_Wrapper.m_GamePlayActionsCallbackInterface.OnDecelerate;
             }
             m_Wrapper.m_GamePlayActionsCallbackInterface = instance;
             if (instance != null)
@@ -204,6 +229,9 @@ public class PlayerControls : IInputActionCollection
                 RotateRight.started += instance.OnRotateRight;
                 RotateRight.performed += instance.OnRotateRight;
                 RotateRight.canceled += instance.OnRotateRight;
+                Decelerate.started += instance.OnDecelerate;
+                Decelerate.performed += instance.OnDecelerate;
+                Decelerate.canceled += instance.OnDecelerate;
             }
         }
     }
@@ -214,5 +242,6 @@ public class PlayerControls : IInputActionCollection
         void OnRotateShip(InputAction.CallbackContext context);
         void OnRotateLeft(InputAction.CallbackContext context);
         void OnRotateRight(InputAction.CallbackContext context);
+        void OnDecelerate(InputAction.CallbackContext context);
     }
 }
